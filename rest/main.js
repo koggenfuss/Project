@@ -9,26 +9,26 @@ const apiUrl = "https://www.googleapis.com/books/v1/volumes?q=";
 const app = express();
 const port = 3000;
 
-// app.listen(port, () => {
-//     console.log(`Listening at http://localhost:${port}`)
-// });
+app.listen(port, () => {
+    console.log(`Listening at http://localhost:${port}`)
+});
 
-  // async function getFromAPI(){
-  //   let promises = []
-  //   for (let i = 1; i <= 151; i++){
-  //     let response = axios.get(`https://pokeapi.co/api/v2/pokemon/${i}`)
-  //     promises.push(response)
-  //   }
-  //   let responses = await Promise.all(promises)
-  //   return responses.map(response => response.data).map(data => ({
-  //     "id": data.id,
-  //     "name": data.name,
-  //     "types": data.types.map(type => type.type.name),
-  //     "img": data.sprites["other"]["official-artwork"]["front_default"]
-  //   }))
+  async function getFromAPI(){
+    let promises = []
+    for (let i = 1; i <= 151; i++){
+      let response = axios.get(`https://pokeapi.co/api/v2/pokemon/${i}`)
+      promises.push(response)
+    }
+    let responses = await Promise.all(promises)
+    return responses.map(response => response.data).map(data => ({
+      "id": data.id,
+      "name": data.name,
+      "types": data.types.map(type => type.type.name),
+      "img": data.sprites["other"]["official-artwork"]["front_default"]
+    }))
  
-  // }
-  // getFromAPI();
+  }
+  getFromAPI();
 
 function loadDatabase(){
   let con = mysql.createConnection({
