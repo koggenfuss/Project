@@ -1,5 +1,4 @@
-//AIzaSyBiu2UA2wbjSznI2YcQDHJjv37EswsEAwo
-password = "KillEric5050"
+
 
 
 const express = require('express');
