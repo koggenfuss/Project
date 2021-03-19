@@ -21,12 +21,11 @@ const port = 3000;
     }
     let responses = await Promise.all(promises);
     console.log(responses);
-    return responses.map(response => response.data).map(data => ({
+  //   return responses.map(response => response.data).map(data => ({
 
+  // });
   }
- 
-}
-  getFromAPI();
+
 
 function loadDatabase(){
   let con = mysql.createConnection({
@@ -56,9 +55,7 @@ function loadDatabase(){
         }
         author = results[0].author;
         console.log(author);
-        //getFromAPI
-        
-        console.log(`${apiUrl}"${title}"+inauthor:"${author}"`);
+        getFromAPI(`${apiUrl}"${title}"+inauthor:"${author}"`);
     });
     
 
