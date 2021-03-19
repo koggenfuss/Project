@@ -13,20 +13,20 @@ const port = 3000;
 //     console.log(`Listening at http://localhost:${port}`)
 // });
 
-  // async function getFromAPI(bookTitleAndAuthorAPIURL){
-  //   let promises = [];
-  //   for (let i = 1; i <= 5; i++){
-  //     let response = axios.get(bookTitleAndAuthorAPIURL);
-  //     promises.push(response);
-  //   }
-  //   let responses = await Promise.all(promises);
-  //   console.log(responses);
-    //return responses.map(response => response.data).map(data => ({
+  async function getFromAPI(bookTitleAndAuthorAPIURL){
+    let promises = [];
+    for (let i = 1; i <= 5; i++){
+      let response = axios.get(bookTitleAndAuthorAPIURL);
+      promises.push(response);
+    }
+    let responses = await Promise.all(promises);
+    console.log(responses);
+    return responses.map(response => response.data).map(data => ({
 
-  //}
+  }
  
-  // }
-  // getFromAPI();
+}
+  getFromAPI();
 
 function loadDatabase(){
   let con = mysql.createConnection({
@@ -37,7 +37,7 @@ function loadDatabase(){
 });
     let title;
     let author;
-    
+
     con.connect (err => {
       if (err) {
         throw err;
