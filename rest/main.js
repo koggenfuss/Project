@@ -32,7 +32,7 @@ function loadDatabase(){
   let con = mysql.createConnection({
     host:"localhost",
     user: "root",
-    password: "KillEric5050",
+    password: password,
     database:"My_Library"
 });
     let title;
