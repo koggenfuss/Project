@@ -15,23 +15,36 @@ const port = 3000;
 
   async function getFromAPI(bookTitleAndAuthorAPIURL){
     let promises = [];
-    for (let i = 1; i <= 5; i++){
-      let response = axios.get(bookTitleAndAuthorAPIURL);
+    let response = axios.get(bookTitleAndAuthorAPIURL);
       promises.push(response);
-    }
-    let responses = await Promise.all(promises);
-    console.log(responses);
-  //   return responses.map(response => response.data).map(data => ({
+    let responses = await Promise.all(promises)
 
-  // });
+    return responses.map(response => response.data.items[0].volumeInfo).map(data => ({
+      "copyright": data.publishedDate,
+      "genre": data.categories[0],
+      "synopsis": data.description
+    }))
+
+    
+    // return responses.map(response => {
+    //   let copyright = JSON.stringify(response.data.items[0].volumeInfo.publishedDate);
+    //   console.log(JSON.stringify(response.data.items[0].volumeInfo.publishedDate));
+    //   let genre = JSON.stringify(response.data.items[0].volumeInfo.categories[0]);
+    //   console.log(JSON.stringify(response.data.items[0].volumeInfo.categories[0]));
+    //   let synopsis = JSON.stringify(response.data.items[0].volumeInfo.description);
+    //   console.log(JSON.stringify(response.data.items[0].volumeInfo.description));
+    //   console.log("-______________________________________________________________________")
+    // });
+
+
+
   }
 
-
-function loadDatabase(){
+async function loadDatabase(){
   let con = mysql.createConnection({
     host:"localhost",
     user: "root",
-    password: password,
+    password: "",
     database:"My_Library"
 });
     let title;
@@ -41,25 +54,26 @@ function loadDatabase(){
       if (err) {
         throw err;
       }
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 1; i++) {
       con.query(`SELECT title FROM books WHERE id = ${i}`, (err, results, fields) => {
         if (err) {
           throw err;
         }
         title = results[0].title;
-        console.log(title);
       });
       con.query(`SELECT author FROM books WHERE id = ${i}`, (err, results, fields) => {
         if (err) {
           throw err;
         }
         author = results[0].author;
-        console.log(author);
-        getFromAPI(`${apiUrl}"${title}"+inauthor:"${author}"`);
-    });
-    
 
-    
+        let data = await getFromAPI(`${apiUrl}"${title}"+inauthor:"${author}"`);
+        console.log(data);
+        
+
+
+        console.log("*********************************TITLE AND AUTHOR  ---" + title + "   " + author);
+    });
   }
   con.end();
  });
