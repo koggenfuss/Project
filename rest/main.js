@@ -21,10 +21,8 @@ const port = 3000;
       promises.push(response);
     let responses = await Promise.all(promises)
 
-
-
      return responses.map(response => response.data.items[0].volumeInfo).map(data => ({
-       "id" : id,
+      "id" : id,
       "copyright" : data.publishedDate,
        "genre" : data.categories[0],
        "synopsis" : data.description
@@ -42,12 +40,12 @@ function loadDatabase(){
     let id;
     let title;
     let author;
-
+    let numberOfBooks = 39;
     con.connect (err => {
       if (err) {
         throw err;
       }
-      for (i = 1; i <= 4; i++){
+      for (i = 1; i <= numberOfBooks; i++){
       con.query(`SELECT id FROM books WHERE id = ${i}`, (err, results, fields) => {
         if (err) {
           throw err;
@@ -76,7 +74,8 @@ function loadDatabase(){
 }
 
 async function callAPI(id, title, author) {
-data = await getFromAPI(id, title, author,`${apiUrl}"${title}"+inauthor:"${author}"`);
+
+  data = await getFromAPI(id, title, author,`${apiUrl}"${title}"+inauthor:"${author}"`);
 
 let con = mysql.createConnection({
   host:"localhost",
@@ -84,17 +83,22 @@ let con = mysql.createConnection({
   password: "KillEric5050",
   database:"My_Library"
 });
+
   con.connect (err => {
     if (err) {
       throw err;
     }       
   });
+
   console.log(data);
-  data.forEach(books => {
-    con.query(`INSERT INTO books (id, copyright, genre, synopsis) VALUES (id = "${id}", "${books.copyright}", "${books.genre}", "${books.synopsis}");` );
+  data.forEach(({copyright, genre, synopsis, id}) => {
+    const query = `UPDATE books set copyright="${copyright}", genre="${genre}", synopsis="${synopsis}" WHERE id=${id}`;
+    con.query(query, (err,results,fields)=>{
+      console.log({err});
+      console.log({results});
+      console.log({fields});
+    })
   });
-
-
 }
 
 loadDatabase();
