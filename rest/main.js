@@ -15,60 +15,60 @@ const port = 3000;
 //     console.log(`Listening at http://localhost:${port}`)
 // });
 
-  async function getFromAPI(id, title, author, bookTitleAndAuthorAPIURL){
-    let promises = [];
-    let response = axios.get(bookTitleAndAuthorAPIURL);
-      promises.push(response);
-    let responses = await Promise.all(promises)
+async function getFromAPI(id, title, author, bookTitleAndAuthorAPIURL){
+  let promises = [];
+  let response = axios.get(bookTitleAndAuthorAPIURL);
+    promises.push(response);
+  let responses = await Promise.all(promises)
 
-     return responses.map(response => response.data.items[0].volumeInfo).map(data => ({
-      "id" : id,
-      "copyright" : data.publishedDate,
-       "genre" : data.categories[0],
-       "synopsis" : data.description
-       }));
-     }
+  return responses.map(response => response.data.items[0].volumeInfo).map(data => ({
+    "id" : id,
+    "copyright" : data.publishedDate,
+    "genre" : data.categories[0],
+    "synopsis" : data.description
+  }));
+}
 
 
 function loadDatabase(){
   let con = mysql.createConnection({
     host:"localhost",
     user: "root",
-    password: "KillEric5050",
+    password: "password",
     database:"My_Library"
 });
-    let id;
-    let title;
-    let author;
-    let numberOfBooks = 39;
-    con.connect (err => {
-      if (err) {
-        throw err;
-      }
-      for (i = 1; i <= numberOfBooks; i++){
-      con.query(`SELECT id FROM books WHERE id = ${i}`, (err, results, fields) => {
-        if (err) {
-          throw err;
-        }
-        id = results[0].id;
-      
-      });
-      con.query(`SELECT title FROM books WHERE id = ${i}`, (err, results, fields) => {
-        if (err) {
-          throw err;
-        }
-        title = results[0].title;
-      });
-      con.query(`SELECT author FROM books WHERE id = ${i}`, (err, results, fields) => {
-        if (err) {
-          throw err;
-        }
-        author = results[0].author;
+  let id;
+  let title;
+  let author;
+  let numberOfBooks = 39;
+  con.connect (err => {
+    if (err) {
+      throw err;
+    }
+  for (i = 1; i <= numberOfBooks; i++){
+  con.query(`SELECT id FROM books WHERE id = ${i}`, (err, results, fields) => {
+    if (err) {
+      throw err;
+    }
+    id = results[0].id;
+  
+  });
+  con.query(`SELECT title FROM books WHERE id = ${i}`, (err, results, fields) => {
+    if (err) {
+      throw err;
+    }
+    title = results[0].title;
+  });
+  con.query(`SELECT author FROM books WHERE id = ${i}`, (err, results, fields) => {
+    if (err) {
+      throw err;
+    }
+    author = results[0].author;
 
-        callAPI(id, title, author);  
-        
+    callAPI(id, title, author);  
+    
     });
-  }
+   }
     con.end();
   });
 }
@@ -80,7 +80,7 @@ async function callAPI(id, title, author) {
 let con = mysql.createConnection({
   host:"localhost",
   user: "root",
-  password: "KillEric5050",
+  password: "password",
   database:"My_Library"
 });
 
