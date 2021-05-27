@@ -17,7 +17,6 @@ SHOW TABLES;
 DESCRIBE books;
 
 
-
 INSERT INTO books (title, author) VALUES 
 ('Thebes', 'Paul Cartledge'),
 ('The Terracotta Warriors', 'Edward Burman'),
